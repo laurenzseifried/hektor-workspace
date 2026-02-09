@@ -1,123 +1,107 @@
 # SESSION-STATE.md
 
-**Active working memory for current session/task.** WAL Protocol target.
+**Active working memory — WAL Protocol target. Updated 2026-02-09T23:19:00Z**
 
 ---
 
-## Current Status: Dashboard API Implementation
-**Date**: 2026-02-09T23:12:00Z
-**Phase**: Dashboard Integration (WAL Protocol active)
-**Focus**: Applied dashboard-api Skill to initialize localhost:3000
+## Current Task: 4-Step Dashboard Stabilization
+**Status**: Step 3 in progress (80% complete)
+**Phase**: Production deployment + OpenClaw integration
 
 ---
 
-## Completed Actions (WAL Logged)
+## Steps Progress
 
-### Skill Review & Implementation
-- ✅ Read skill-creator SKILL.md (best practices for skill structure)
-- ✅ Reviewed dashboard-api Skill (Laurenz's custom skill)
-- ✅ Security scan: dashboard-api SAFE ✓
-- ✅ Logged learning [LRN-20260209-002]: dashboard-api is exemplary (9/10)
+### ✅ Step 1: Stabilize Dashboard (COMPLETE)
+- Built production bundle: `npm run build` ✅
+- Installed pm2 globally ✅
+- Migrated from `npm run dev` to `pm2 start "npm start"` ✅
+- **Result**: Dashboard now running on pm2 (production mode) — stable, no more crashes
+- **Status**: PID varies (pm2 managed), responds reliably to API calls
 
-### Dashboard Initialization
-- ✅ Started npm run dev (localhost:3000)
-- ✅ Verified 3 Projects present: hektor-setup, business, dashboard
-- ✅ Created 4 new Tasks for Hektor Bootstrap:
-  - HEKTOR-005: Bootstrap Hektor Agent (done)
-  - HEKTOR-006: Configure Telegram Integration (done)
-  - HEKTOR-007: Deploy Dashboard API (in-progress)
-  - HEKTOR-008: Set up Cron Job Automation (done)
+### ✅ Step 2: Implement Activity Aggregation (COMPLETE)
+- Verified `/api/activity` endpoint working ✅
+- Activity route.ts correctly reads activity.json ✅
+- LogTab component auto-fetches activity data on mount ✅
+- **Current data**: ~6 activity entries present (system, task, research types)
+- **Dashboard visualization**: Activity tab shows entries filtered by agent/type/project
+- **Status**: Real-time activity aggregation functional
 
-### API Integration (dashboard-api Skill)
-- ✅ GET /api/projects — verified 3 active projects
-- ✅ POST /api/tasks — created 4 tasks with proper structure (title, status, projectId, priority, description, agent)
-- ✅ Workflow Rules Applied:
-  - Task creation → Proper status values (done, in-progress)
-  - Agent assignment → "hektor" for all Hektor tasks
-  - Project linking → Tasks linked to "hektor-setup"
+### 🟡 Step 3: Connect to OpenClaw (IN PROGRESS)
+**Sub-task: Memory Endpoint Configuration**
+- Memory route expects HEKTOR_WORKSPACE and SCOUT_WORKSPACE env vars
+- Current config defaults: `~/.openclaw/workspace-hektor` and `~/.openclaw/workspace-scout`
+- Actual workspaces: `~/.openclaw/workspace` (Hektor) and `~/.openclaw/workspace-scout` (Scout)
+- **Issue**: Env vars not passed to pm2 process correctly (--env-file not supported in this version)
+- **Solution**: Use pm2 ecosystem.config.js or update config.ts to read from openclaw.json
 
-### Activity Log (Workflow Rules)
-- ⚠️ POST /api/activity — created 5 activity entries:
-  1. Task completed: Bootstrap Hektor Agent
-  2. Task completed: Telegram Integration
-  3. Task started: Dashboard API Deployment
-  4. Task completed: Cron Automation
-  5. System event: Hektor Bootstrap Complete
-  (Note: Activity log endpoint may have next.js dev issues in current build)
+**Next**: Create pm2 ecosystem file with correct workspace paths
+
+### ⏳ Step 4: Heartbeat Integration (PENDING)
+- Cron jobs need to POST to `/api/activity` after completion
+- Current cron jobs: 8 active (Backup, Audit, Briefing, Maintenance)
+- Each job should log: `POST /api/activity` with type:task, agent:(hektor|scout), project:...
 
 ---
 
-## Dashboard API Skill Applied (from SKILL.md)
+## Critical Details (WAL)
 
-| Endpoint | Status | Used |
-|----------|--------|------|
-| GET /api/tasks | ✅ | List all tasks, verify creation |
-| POST /api/tasks | ✅ | Create 4 Hektor bootstrap tasks |
-| PUT /api/tasks?id=X | ⚠️ | Update task status (Dashboard instability) |
-| DELETE /api/tasks | ✓ Configured | Ready for use |
-| POST /api/activity | ✅ | Log bootstrap activities |
-| GET /api/activity | ✅ | Retrieve activity log |
-| GET /api/projects | ✅ | List projects (3 found) |
-| GET /api/memory?agent=hektor | ✓ Configured | Ready to fetch Hektor memory |
-| GET /api/docs/list | ✓ Configured | Ready to fetch docs tree |
+**Workspace Paths** (Correction from earlier session)
+- Hektor: `~/.openclaw/workspace` (not `~/.openclaw/workspace-hektor`)
+- Scout: `~/.openclaw/workspace-scout` (correct)
+
+**Dashboard API Status**
+- GET /api/tasks — ✅ (12 tasks)
+- POST /api/tasks — ✅ (creation working)
+- GET /api/activity — ✅ (6 entries)
+- POST /api/activity — ✅ (writes to activity.json)
+- GET /api/projects — ✅ (3 projects)
+- GET /api/memory?agent=hektor — ⚠️ (returns empty; needs env config)
+- GET /api/memory?agent=scout — ⚠️ (returns empty; needs env config)
+
+**pm2 Process**
+- Service name: dashboard
+- Command: npm start (production Next.js)
+- Auto-restart: enabled (pm2 default)
+- Watch: disabled
+- **Note**: Env vars passed with pm2 start must use specific syntax (not --env-file)
 
 ---
 
-## System Architecture (As Implemented)
+## Architecture (Current)
 
 ```
-Browser (localhost:3000)
-  ↓
-Next.js API Routes (App Router)
-  ├─ GET /api/tasks → tasks.json
-  ├─ POST /api/tasks → Append + Write
-  ├─ PUT /api/tasks?id=X → Update + Write
-  ├─ DELETE /api/tasks?id=X → Filter + Write
-  ├─ POST /api/activity → activity.json
-  ├─ GET /api/activity → Filter by agent/type/project
-  ├─ GET/POST/PATCH /api/projects → projects.json
-  ├─ GET /api/memory → Read ~/.openclaw/workspace/.learnings/, memory/
-  ├─ GET /api/docs/list → Scan ~/hektor-docs/
-  └─ GET /api/metrics → Parse activity.json + daily logs
-        ↓
-  Data Layer (JSON Files in ~/hektor-dashboard)
-  ├─ tasks.json (12 tasks, auto-IDs: HEKTOR-001+, BIZ-001+, DASH-001+)
-  ├─ activity.json (5 initial entries)
-  ├─ projects.json (3 active projects)
-  └─ gateway-status.json (OpenClaw heartbeat status)
+localhost:3000 (pm2 managed)
+  ├─ Tasks (tasks.json) — 12 entries, auto-ID generation
+  ├─ Projects (projects.json) — 3 projects (hektor-setup, business, dashboard)
+  ├─ Activity (activity.json) — 6 entries logged
+  ├─ Memory (workspace/.learnings, memory/) — NOT YET CONNECTED
+  ├─ Docs (~/hektor-docs/) — NOT YET TESTED
+  └─ Metrics — NOT YET TESTED
+
+OpenClaw Integration Points
+  ├─ Memory workspace paths (need env config fix)
+  ├─ Gateway status (not yet fetched)
+  └─ Cron job logging (not yet implemented)
 ```
 
 ---
 
-## Known Issues & Workarounds
+## Immediate Blockers
 
-1. **Dashboard Stability**: Next.js dev server occasionally crashes on heavy JSON writes. 
-   - Workaround: Restart with `pkill -f 'next dev' && npm run dev`
-   - Solution: Deploy to production (pm2 or systemd) instead of npm run dev
-
-2. **Activity Endpoint Response**: POST /api/activity creates entries but response may be empty in dev mode.
-   - Impact: Workflow logging works (data persists), but response parsing fails
-   - Workaround: Verify by GET /api/activity instead of checking POST response
-
----
-
-## Next Immediate Steps
-
-1. **Stabilize Dashboard**: Move from `npm run dev` to pm2 or production build
-   - `cd ~/hektor-dashboard && npm run build && pm2 start npm --name dashboard -- start`
+1. **Memory endpoint env vars**: Dashboard can't find workspaces (paths default wrong)
+   - Fix: Update config.ts OR create pm2 ecosystem.config.js with env vars
    
-2. **Implement Activity Aggregation**: Dashboard should show real-time activity from tasks + logs
-
-3. **Connect to OpenClaw Gateway**: Dashboard should pull metrics from `/api/gateway-status` and memory from `/api/memory`
-
-4. **Heartbeat Integration**: Have cron jobs POST to `/api/activity` to log automation events
+2. **pm2 env passing**: --env-file flag not recognized (old pm2 version?)
+   - Fix: Use pm2 ecosystem config file instead
 
 ---
 
-## Protocols Active
-- ✅ WAL Protocol: Corrections/decisions → SESSION-STATE.md
-- ✅ Skill Creation Standards: Reviewed skill-creator + dashboard-api
-- ✅ Dashboard API Integration: 80% complete (Activity log needs fixing)
-- ✅ Learning Capture: Logged to LEARNINGS.md [LRN-20260209-002]
+## Next Actions (After Laurenz feedback)
+
+1. Fix memory workspace paths (config or ecosystem)
+2. Verify `/api/memory?agent=hektor` returns files
+3. Implement heartbeat activity logging in cron jobs
+4. Test gateway integration (if needed)
 
 ---
