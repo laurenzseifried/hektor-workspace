@@ -1,107 +1,70 @@
-# SESSION-STATE.md
+# SESSION-STATE.md — WAL Working Memory
 
-**Active working memory — WAL Protocol target. Updated 2026-02-09T23:19:00Z**
+**Purpose:** Write-Ahead Log für Korrektionen, Entscheidungen, Präferenzen während einer Session.
 
----
+**Regel:** Dies ist flüchtig (Session-Scope). Nach jeder wichtigen Korrektur/Entscheidung von Laurenz → SOFORT hier notieren, DANN entsprechend handeln.
 
-## Current Task: 4-Step Dashboard Stabilization
-**Status**: Step 3 in progress (80% complete)
-**Phase**: Production deployment + OpenClaw integration
+**Nicht löschen** — nur nach Session-Ende (dann → MEMORY.md migr ieren).
 
 ---
 
-## Steps Progress
+## Session Info
 
-### ✅ Step 1: Stabilize Dashboard (COMPLETE)
-- Built production bundle: `npm run build` ✅
-- Installed pm2 globally ✅
-- Migrated from `npm run dev` to `pm2 start "npm start"` ✅
-- **Result**: Dashboard now running on pm2 (production mode) — stable, no more crashes
-- **Status**: PID varies (pm2 managed), responds reliably to API calls
-
-### ✅ Step 2: Implement Activity Aggregation (COMPLETE)
-- Verified `/api/activity` endpoint working ✅
-- Activity route.ts correctly reads activity.json ✅
-- LogTab component auto-fetches activity data on mount ✅
-- **Current data**: ~6 activity entries present (system, task, research types)
-- **Dashboard visualization**: Activity tab shows entries filtered by agent/type/project
-- **Status**: Real-time activity aggregation functional
-
-### 🟡 Step 3: Connect to OpenClaw (IN PROGRESS)
-**Sub-task: Memory Endpoint Configuration**
-- Memory route expects HEKTOR_WORKSPACE and SCOUT_WORKSPACE env vars
-- Current config defaults: `~/.openclaw/workspace-hektor` and `~/.openclaw/workspace-scout`
-- Actual workspaces: `~/.openclaw/workspace` (Hektor) and `~/.openclaw/workspace-scout` (Scout)
-- **Issue**: Env vars not passed to pm2 process correctly (--env-file not supported in this version)
-- **Solution**: Use pm2 ecosystem.config.js or update config.ts to read from openclaw.json
-
-**Next**: Create pm2 ecosystem file with correct workspace paths
-
-### ⏳ Step 4: Heartbeat Integration (PENDING)
-- Cron jobs need to POST to `/api/activity` after completion
-- Current cron jobs: 8 active (Backup, Audit, Briefing, Maintenance)
-- Each job should log: `POST /api/activity` with type:task, agent:(hektor|scout), project:...
+- **Session Start:** 2026-02-10 09:51
+- **Current Model:** Sonnet
+- **Context Focus:** Proactive-Agent v3.0.0 Implementation
+- **Task:** Implement WAL Protocol, Working Buffer, VFM Scoring in code + docs
 
 ---
 
-## Critical Details (WAL)
+## WAL Log (Corrections/Decisions)
 
-**Workspace Paths** (Correction from earlier session)
-- Hektor: `~/.openclaw/workspace` (not `~/.openclaw/workspace-hektor`)
-- Scout: `~/.openclaw/workspace-scout` (correct)
+### [2026-02-10 09:51] Relentless Resourcefulness Protocol
 
-**Dashboard API Status**
-- GET /api/tasks — ✅ (12 tasks)
-- POST /api/tasks — ✅ (creation working)
-- GET /api/activity — ✅ (6 entries)
-- POST /api/activity — ✅ (writes to activity.json)
-- GET /api/projects — ✅ (3 projects)
-- GET /api/memory?agent=hektor — ⚠️ (returns empty; needs env config)
-- GET /api/memory?agent=scout — ⚠️ (returns empty; needs env config)
+**From:** Ciphershell (Laurenz)  
+**Message ID:** 334-337  
+**Context:** I was blocking when hitting unknowns instead of exploring + solving first.
 
-**pm2 Process**
-- Service name: dashboard
-- Command: npm start (production Next.js)
-- Auto-restart: enabled (pm2 default)
-- Watch: disabled
-- **Note**: Env vars passed with pm2 start must use specific syntax (not --env-file)
+**Decision:**
+- Never stop at a block without 5-10 exploration attempts
+- Escalate ONLY after exhaustion OR when Matrix-Decision required (Sonnet vs Opus for irreversible)
+- OR when business/security decision only user can make
 
----
+**Action Taken:**
+- Read OpenClaw docs locally (sessions, models, slash commands)
+- Found `/model sonnet` solution in `/opt/homebrew/lib/node_modules/openclaw/docs/tools/slash-commands.md`
+- Documented finding in memory/2026-02-10.md
+- Committed to git
 
-## Architecture (Current)
-
-```
-localhost:3000 (pm2 managed)
-  ├─ Tasks (tasks.json) — 12 entries, auto-ID generation
-  ├─ Projects (projects.json) — 3 projects (hektor-setup, business, dashboard)
-  ├─ Activity (activity.json) — 6 entries logged
-  ├─ Memory (workspace/.learnings, memory/) — NOT YET CONNECTED
-  ├─ Docs (~/hektor-docs/) — NOT YET TESTED
-  └─ Metrics — NOT YET TESTED
-
-OpenClaw Integration Points
-  ├─ Memory workspace paths (need env config fix)
-  ├─ Gateway status (not yet fetched)
-  └─ Cron job logging (not yet implemented)
-```
+**Impact:**
+- No more sub-agent spawning for model selection ✓
+- `/model` directives for session-level model switching ✓
+- Sub-agents reserved for parallel/background work only ✓
 
 ---
 
-## Immediate Blockers
+## Current Focus
 
-1. **Memory endpoint env vars**: Dashboard can't find workspaces (paths default wrong)
-   - Fix: Update config.ts OR create pm2 ecosystem.config.js with env vars
-   
-2. **pm2 env passing**: --env-file flag not recognized (old pm2 version?)
-   - Fix: Use pm2 ecosystem config file instead
+**Implementing:** Proactive-Agent v3.0.0 with `/model sonnet` pattern
+
+1. ✅ Decision discovered + documented
+2. ⏳ AGENTS.md enhancement (Sessions vs Sub-Agents clarity)
+3. ⏳ memory/working-buffer.md structure finalized
+4. ⏳ notes/areas/proactive-tracker.md created
+5. ⏳ Test run in real workflow
+
+---
+
+## Model State
+
+**Active Session Model:** Sonnet (switched via `/model sonnet`)  
+**Reason:** Config/creativity work on Proactive-Agent patterns
 
 ---
 
-## Next Actions (After Laurenz feedback)
+## Next State Reset
 
-1. Fix memory workspace paths (config or ecosystem)
-2. Verify `/api/memory?agent=hektor` returns files
-3. Implement heartbeat activity logging in cron jobs
-4. Test gateway integration (if needed)
-
----
+To end this session's WAL:
+1. Copy relevant entries to MEMORY.md (curated)
+2. Clear SESSION-STATE.md (or keep for history)
+3. Record final status in memory/2026-02-10.md

@@ -38,6 +38,23 @@ Neuer Task eingehend
    → Opus
 ```
 
+### How: `/model` Slash Command für Model-Wechsel
+
+**NUR SO model-wechseln:**
+
+```
+/model sonnet
+[arbeit mit sonnet...]
+/model haiku
+```
+
+- Slash-Befehl recognized by Gateway (Directive)
+- Persisted in Session bis geändert
+- Kombinierbar: `/model sonnet` + Message = Task mit Sonnet
+- "ON-DEMAND SWITCH" (OpenClaw FAQ: "use `/model` to switch the current session model at any time")
+
+**Nicht:** Sub-Agent spawnen für Model-Wechsel. Das ist über-engineering.
+
 ### Decision Tree: Wann Sub-Agent?
 
 ```
@@ -47,9 +64,20 @@ Sub-Agent spawnen? NUR wenn ALLE zutreffen:
 ├─ 2. Arbeit kann PARALLEL laufen (blockiert mich nicht)
 └─ 3. Ergebnis ist DISKRET (File, Report, Recherche-Ergebnis)
 
-Beispiele JA:  Background-Research, Datei-Analyse, Bulk-Processing
-Beispiele NEIN: Model-Wechsel, Config-Arbeit, Gespräch weiterführen
+Beispiele JA:  Background-Research, Datei-Analyse, Bulk-Processing, parallel Audits
+Beispiele NEIN: Model-Wechsel (→ /model), Config-Arbeit (→ /model sonnet), Gesprächs-Kontext
 ```
+
+### Sessions vs Sub-Agents — Architektur-Unterschied
+
+| Aspekt | Sessions | Sub-Agents |
+|--------|----------|-----------|
+| **Purpose** | Meine Model-Auswahl pro Task | Parallele Background-Arbeit |
+| **Model-Wechsel** | `/model sonnet/haiku/opus` | ❌ Nicht dafür nutzen |
+| **Config-Änderungen** | `/model sonnet` → direkt | ❌ Nicht dafür nutzen |
+| **Dialog-Kontext** | ✅ Kept (ich bin noch hier) | ❌ Isoliert (kein Dialog) |
+| **Parallel-Arbeit** | ❌ Blockiert mich | ✅ Parallel zu mir |
+| **Diskrete Results** | ✅ In Session | ✅ Via Webhook/Report |
 
 ### Was Model Routing NICHT ist
 
@@ -57,6 +85,7 @@ Beispiele NEIN: Model-Wechsel, Config-Arbeit, Gespräch weiterführen
 - ❌ Sub-Agent spawnen für Config-Änderungen
 - ❌ Model-Wechsel = Agent-Wechsel
 - ✅ ICH arbeite direkt — das Model ist MEIN Werkzeug, nicht ein anderer Agent
+- ✅ `/model sonnet` → ICH arbeite mit Sonnet für diese Config
 - ✅ Sub-Agents nur für parallele, isolierte Background-Arbeit
 
 ## Anti-Silent-Failure
