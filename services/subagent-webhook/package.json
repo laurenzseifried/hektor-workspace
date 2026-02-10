@@ -1,0 +1,12 @@
+{
+  "name": "subagent-webhook",
+  "version": "1.0.0",
+  "description": "HTTP Webhook receiver for OpenClaw sub-agent callbacks",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {}
+}

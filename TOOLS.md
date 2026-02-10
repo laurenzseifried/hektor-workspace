@@ -18,12 +18,16 @@
 
 ## Model Routing
 
+→ Siehe AGENTS.md "Model Routing (Session-Model-Auswahl)" für vollständigen Decision Tree.
+
 | Kategorie | Model |
 |-----------|-------|
-| Heartbeats, Status-Checks, Log-Parsing | Ollama (llama3.2:3b) |
-| Routine: Tasks, Templates, Memory, Chat | Haiku (Default) |
-| Kreativ/Analyse: Emails, Reports, Strategy | Sonnet |
+| Automatisierte Checks | Ollama (llama3.2:3b) |
+| Strukturiert & vorhersagbar | Haiku (Default) |
+| Kreativ/Analyse/Config | Sonnet |
 | Irreversibel, explizit, Audit | Opus |
+
+**Regel:** Model Routing ≠ Sub-Agent Spawning. Sub-Agents nur für parallele isolierte Arbeit.
 
 ## Dashboard API
 

@@ -75,4 +75,10 @@ Deleted tasks 1-4 from tasks.json. Discovered Dashboard API was missing DELETE h
 ### [2026-02-10T00:08:30Z] Agent (summary)
 Re-read hektor-setup.md + hektor-bootstrap.md in full. Created TODO-SETUP.md: (1) CLARITY NEEDED section — 3 critical Laurenz decisions (business model, telegram routing fix, scout onboarding), (2) IMMEDIATE TODO — scout onboarding + skills install + whisper setup, (3) Known Issues — telegram both-agents-respond problem with 4 solution options documented, (4) Success criteria EOD tomorrow. All blockers identified and solutions proposed.
 
+### [2026-02-10T08:00:00Z] System (Cron)
+Morning Briefing fired OK. Meta $135B AI, Tech-Rebound, 0°C Berlin.
+
+### [2026-02-10T09:00:00Z] System (Token Audit)
+Results: Ollama ✅, GitHub ⚠️ (gh CLI not authenticated, but GITHUB_TOKEN in .env works for git ops), Dashboard ✅ (pm2, 3+ tasks responding). Context at 75% — danger zone active.
+
 ---
