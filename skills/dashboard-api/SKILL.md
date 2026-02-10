@@ -21,12 +21,12 @@ Use `curl` for all API calls.
 - `priority`: low | medium | high
 - `projectId`: must match an existing project id (e.g. "hektor-setup", "business", "dashboard")
 
-**PUT /api/tasks?id=<id>** — update task:
+**PATCH /api/tasks/<id>** — update task:
 ```json
-{"status": "in-progress"}
+{"status": "in-progress", "title": "...", "priority": "high"}
 ```
 
-**DELETE /api/tasks?id=<id>** — delete task
+**DELETE /api/tasks/<id>** — delete task (returns `{"success": true, "deleted": {...}}`)
 
 ### Activity Log
 
@@ -88,13 +88,18 @@ Every significant action MUST be logged to the activity API:
 
 Example — start a task:
 ```bash
-curl -X PUT "http://localhost:3000/api/tasks?id=3" \
+curl -X PATCH "http://localhost:3000/api/tasks/3" \
   -H "Content-Type: application/json" \
   -d '{"status":"in-progress"}'
 
 curl -X POST http://localhost:3000/api/activity \
   -H "Content-Type: application/json" \
   -d '{"type":"task","agent":"hektor","title":"Started: Gateway setup","project":"hektor-setup"}'
+```
+
+Example — delete a task:
+```bash
+curl -X DELETE http://localhost:3000/api/tasks/3
 ```
 
 Example — log research:
