@@ -3,7 +3,7 @@
   "skills": {
     "clawdex": {
       "version": "1.0.2",
-      "installedAt": 1770672402895
+      "installedAt": 1770702837005
     },
     "self-improving-agent": {
       "version": "1.0.5",
@@ -12,6 +12,18 @@
     "github": {
       "version": "1.0.0",
       "installedAt": 1770672780854
+    },
+    "brave-search": {
+      "version": "1.0.1",
+      "installedAt": 1770702517420
+    },
+    "coding-agentoj9u": {
+      "version": "1.0.0",
+      "installedAt": 1770702520783
+    },
+    "openai-whisper": {
+      "version": "1.0.0",
+      "installedAt": 1770703376684
     }
   }
 }

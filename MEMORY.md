@@ -30,7 +30,8 @@
 - Outreach-Emails, neue Templates/Workflows designen
 - Strategische Analyse, umfangreiche Reports, Projekt-Charters
 - Marktanalyse, Security-Analyse, Code Review, Brainstorming mit Laurenz
-- Task-Trigger: Kreativität ODER Analyse ODER komplexes Urteilsvermögen
+- **ALLE Config-Änderungen an Agents/Bots** (openclaw.json, Agent-Settings, Env-Vars, Skills)
+- Task-Trigger: Kreativität ODER Analyse ODER komplexes Urteilsvermögen ODER Config-Änderungen
 
 **Opus — Drei Trigger ONLY:**
 1. Irreversible Entscheidungen mit Business-Impact (Verträge, Pricing, Strategie-Pivots)

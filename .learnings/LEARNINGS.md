@@ -79,3 +79,210 @@ Promote this as a template for future skills. The skill-creator recommends exact
 - See Also: None yet
 
 ---
+
+## [LRN-20260210-001] best_practice
+
+**Logged**: 2026-02-10T06:57:00Z
+**Priority**: high
+**Status**: established
+**Area**: security
+
+### Summary
+Established formal skill security audit workflow. NEVER install a skill without running both scanners first.
+
+### Details
+Installed brave-search + coding-agentoj9u without security checks. Laurenz corrected: must run scanners BEFORE reading SKILL.md.
+
+**Corrected Workflow:**
+1. **skill-scanner scan /path/to/skill** → Check severity/findings
+   - Location: `/opt/homebrew/bin/skill-scanner`
+   - Command: `skill-scanner scan <path> --format json` for details
+   
+2. **Clawdex API** → Check online verdict
+   - API: `https://clawdex.koi.security/api/skill/SKILL_NAME`
+   - Verdicts: benign | malicious | unknown
+   
+3. **SKILL.md + Code Review** → Only if both pass
+
+**Audit Results (2026-02-10):**
+- brave-search: ✅ Clawdex benign, ✅ Scanner SAFE → USE
+- coding-agentoj9u: ✅ Clawdex benign, ⚠️ Scanner HIGH (FP: `rm -rf` in docs) → USE (false positive)
+
+### Suggested Action
+Make this mandatory for ALL skill installations. Create a cron job reminder or alert system.
+
+### Metadata
+- Source: user correction (Laurenz)
+- Related Files: /opt/homebrew/bin/skill-scanner, TOOLS.md (add to skill-install section)
+- Tags: security, workflow, mandatory
+- See Also: LRN-20260209-001 (tooling discovery)
+
+---
+
+## [LRN-20260210-002] best_practice
+
+**Logged**: 2026-02-10T06:59:00Z
+**Priority**: critical
+**Status**: established
+**Area**: meta
+
+### Summary
+When Laurenz says "merk dir das" or "lern draus", treat it as an explicit trigger to log a Learning entry immediately.
+
+### Details
+These phrases are meta-instructions about my own behavior. Always:
+1. Create a [LRN-YYYYMMDD-XXX] entry
+2. Log it to .learnings/LEARNINGS.md immediately
+3. Add context from the conversation
+
+Do NOT log "as a note to self" — use formal Learning structure.
+
+### Suggested Action
+This is now a behavioral rule. NEVER skip learning logging when prompted explicitly.
+
+### Metadata
+- Source: direct user instruction (Laurenz)
+- Related Files: .learnings/LEARNINGS.md, AGENTS.md
+- Tags: meta, behavior, mandatory
+- See Also: LRN-20260210-001 (security learnings)
+
+---
+
+## [LRN-20260210-003] best_practice
+
+**Logged**: 2026-02-10T07:01:00Z
+**Priority**: high
+**Status**: established
+**Area**: skills
+
+### Summary
+When installing Whisper or any speech-to-text skill: use ONLY the official skill from clawhub. Do not use third-party forks or unofficial variants.
+
+### Details
+Laurenz instruction: "Beachte den offiziellen Skill zu nutzen" (use the official skill).
+
+For Whisper: search clawhub for official variant, install that, apply security audits (skill-scanner + clawdex) before use.
+
+### Suggested Action
+When installing Whisper: 
+1. `clawhub search whisper`
+2. Identify the official skill (check publisher/stars/downloads)
+3. Run security audit before install
+4. Install official variant only
+
+### Metadata
+- Source: user instruction (Laurenz)
+- Related Files: TOOLS.md (add to skill-install section)
+- Tags: skills, best_practice, mandatory
+- See Also: LRN-20260210-001 (skill security workflow)
+
+---
+
+## [LRN-20260210-004] integration_gotcha
+
+**Logged**: 2026-02-10T07:16:00Z
+**Priority**: critical
+**Status**: established
+**Area**: telegram
+
+### Summary
+Cross-topic Telegram posting works via `threadId` parameter. Can alert from Topic 26 (#hektor) to Topic 9 (#alerts) without session-switching.
+
+### Details
+Tested: `message action:send` with `channel: telegram`, `target: -1003808534190`, `threadId: 9` successfully posted to #alerts.
+
+**Session isolation holds:** Each Topic is separate session, but outbound `message` tool calls can target ANY Topic in the group using `threadId`.
+
+**Topic IDs (Telegram HQ group):**
+- Topic 1: #general
+- Topic 2: #research
+- Topic 5: #coordination
+- Topic 7: #logs
+- Topic 9: #alerts
+- Topic 26: #hektor (Hektor exclusive)
+- Topic 27: #scout (Scout exclusive)
+
+### Suggested Action
+Store Topic IDs as constants in TOOLS.md or AGENTS.md for consistent alert routing.
+
+**Alert workflow:**
+```
+message action:send
+  channel: telegram
+  target: -1003808534190
+  threadId: 9  # #alerts
+  message: "[ALERT] Problem description"
+```
+
+### Metadata
+- Source: user test (Laurenz)
+- Related Files: AGENTS.md (add Topic ID constants), TOOLS.md (update message tool reference)
+- Tags: telegram, integration, alerting, critical
+- See Also: None
+
+---
+
+## [LRN-20260210-005] best_practice
+
+**Logged**: 2026-02-10T07:17:00Z
+**Priority**: high
+**Status**: established
+**Area**: workflow
+
+### Summary
+Topic IDs are mandatory. Use them consistently for all cross-topic routing.
+
+**Topic IDs to memorize and use:**
+- #general (1) → For public announcements
+- #research (2) → Scout's research output
+- #coordination (5) → Inter-agent coordination
+- #logs (7) → Activity logs (use for routine updates)
+- #alerts (9) → ALWAYS use for critical issues, blockers, cost anomalies
+- #hektor (26) → Hektor exclusive workspace (current session)
+- #scout (27) → Scout exclusive workspace
+
+### Suggested Action
+1. Use `threadId: 9` for alerts (message tool)
+2. Use `threadId: 7` for activity logs
+3. Scout should use same Topic IDs in his routines
+
+### Metadata
+- Source: user instruction (Laurenz)
+- Related Files: TOOLS.md (already updated), AGENTS.md
+- Tags: workflow, mandatory, memory
+- See Also: LRN-20260210-004 (cross-topic posting)
+
+---
+
+## [LRN-20260210-006] correction
+
+**Logged**: 2026-02-10T07:23:00Z
+**Priority**: high
+**Status**: established
+**Area**: architecture
+
+### Summary
+Agent-to-Agent communication via Telegram messages doesn't work — and that's intentional.
+
+### Details
+Tested: Hektor (Topic 26) sending via `message` tool to Scout (Topic 27). Scout didn't respond.
+
+**Why:** Scout is configured to respond ONLY to user input from Laurenz, not to bot-generated messages from other agents. This is a security feature — agents can't directly control each other.
+
+**Correct topology:**
+- Topic 26 (#hektor): Hektor ↔ Laurenz (isolated session)
+- Topic 27 (#scout): Scout ↔ Laurenz (isolated session)
+- No direct agent-to-agent control via Telegram
+
+If agents need to coordinate: Laurenz explicitly delegates in Topic 5 (#coordination) or agents use `sessions_send()` tool (internal agent bus, not Telegram).
+
+### Suggested Action
+Don't try to send Telegram messages to other agents. Use Laurenz as the coordinator, or use internal agent tools if available.
+
+### Metadata
+- Source: user test + correction (Laurenz)
+- Related Files: AGENTS.md (document this architecture)
+- Tags: security, architecture, design-decision
+- See Also: LRN-20260210-004 (cross-topic posting)
+
+---
