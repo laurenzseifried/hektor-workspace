@@ -21,7 +21,7 @@
 
 **ENFORCEMENT (VOR jeder Aufgabe):**
 1. Evaluate (4-Stufen) → Haiku/Sonnet/Opus
-2. `/model X` (explizit setzen)
+2. `session_status(model="haiku|sonnet|opus")` (Tool Call, zuverlässig)
 3. Dann antworten/arbeiten
 
 **"Aufgabe" = alles:** Laurenz Message, Scout Message, Cron Job, Sub-Agent Result, selbst-initiiert.
