@@ -19,6 +19,13 @@
 **Vollständiges Framework:** `frameworks/model-routing.md` (im Dashboard)  
 **Hier:** Kompakte Entscheidungslogik für den täglichen Gebrauch.
 
+**ENFORCEMENT (VOR jeder Aufgabe):**
+1. Evaluate (4-Stufen) → Haiku/Sonnet/Opus
+2. `/model X` (explizit setzen)
+3. Dann antworten/arbeiten
+
+**"Aufgabe" = alles:** Laurenz Message, Scout Message, Cron Job, Sub-Agent Result, selbst-initiiert.
+
 ### Decision Framework (4-Stufen-Prüfung)
 
 **Stufe 1: Irreversibel oder Rechtlich?**
