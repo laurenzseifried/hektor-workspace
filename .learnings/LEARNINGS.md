@@ -254,6 +254,87 @@ Topic IDs are mandatory. Use them consistently for all cross-topic routing.
 
 ---
 
+## [LRN-20260210-008] best_practice
+
+**Logged**: 2026-02-10T12:11:00Z
+**Priority**: critical
+**Status**: established
+**Area**: architecture, operations
+
+### Summary
+Before ANY Gateway-blocking config changes (provider changes, model redef, etc.), consult Scout FIRST, validate locally, THEN restart. Never restart blind.
+
+### Details
+Incident: Modified groq provider in models.providers, restarted Gateway without:
+1. Validating the new config would pass schema
+2. Consulting Scout about the change
+3. Testing locally first
+
+This could have blocked the Gateway startup again.
+
+**Corrected Workflow (config changes that could break Gateway):**
+
+1. **Consult Scout:** `@scout_recherche_bot Schema validation help: I'm about to change X in config. Will this work?`
+2. **Validate locally:** `openclaw doctor --config` or `jq` schema check
+3. **Test the change:** Apply to a test file first
+4. **Then restart:** Only if validation passes
+5. **Monitor:** Watch `openclaw logs --follow` for startup errors
+
+**Safe changes** (no Scout needed):
+- Topic-level settings
+- Heartbeat intervals
+- Message queuing settings
+- Non-blocking cosmetic changes
+
+**Blocking changes** (Scout consultation required):
+- Provider registration/removal
+- Model definitions
+- Gateway core config
+- Auth changes
+- Sandbox/security rules
+
+### Suggested Action
+Add this to AGENTS.md as a mandatory pre-restart checklist.
+
+### Metadata
+- Source: user correction (Laurenz) after blocking incident
+- Related Files: AGENTS.md (add checklist), TOOLS.md (add config-change protocol)
+- Tags: operations, safety, critical
+- See Also: LRN-20260210-007 (Groq Whisper ≠ Chat-Model)
+
+---
+
+## [LRN-20260210-009] correction
+
+**Logged**: 2026-02-10T12:13:00Z
+**Priority**: high
+**Status**: established
+**Area**: model-routing
+
+### Summary
+Config changes require Sonnet, not Haiku. I used Haiku for Groq Provider debugging — that was wrong.
+
+### Details
+**Why:** Config work = complexity + analysis + risk. Sonnet tier per AGENTS.md.
+
+**Wrong:** Haiku for "let me just change the config and restart"
+**Right:** Sonnet for "I need to validate this config change and prevent Gateway breakage"
+
+This also contributed to missing the validation step — Haiku is for routine tasks, not high-stakes changes.
+
+### Suggested Action
+Before ANY config patch: `/model sonnet` first, THEN work on it.
+
+### Metadata
+- Source: user question (Laurenz)
+- Related Files: AGENTS.md (model routing section)
+- Tags: model-routing, config, correction
+- See Also: LRN-20260210-008 (config-change protocol)
+
+---
+
+---
+
 ## [LRN-20260210-006] correction
 
 **Logged**: 2026-02-10T07:23:00Z

@@ -12,6 +12,7 @@
 - Direkt, keine Floskeln
 - Will AI-Business aufbauen, sucht hohe Automatisierung
 - Timezone: Europe/Berlin
+- **Wichtige Regel:** Bei OpenClaw-Fragen (Configs, Probleme, Architektur, Features) IMMER Docs durchsuchen (`/opt/homebrew/lib/node_modules/openclaw/docs/` oder docs.openclaw.ai) — dort steht alles dokumentiert
 
 ## Model Routing — ACTIVE DECISION MATRIX
 
@@ -26,6 +27,23 @@
 
 **Sub-Agents:** NUR für parallele, isolierte Background-Arbeit (Research, Bulk-Processing). NIEMALS für Model-Switching oder Config-Tasks.
 
+## Ollama Heartbeat — GELÖST (2026-02-10)
+
+**Root Cause:** `tools.byProvider` mit `profile: "minimal"` + `allow: ["sessions_send"]` ergab leere Tools-Liste (Schnittmenge). OpenClaw schickte `tools: []` an Ollama → Model konnte keine Tool-Calls machen, halluzinierte stattdessen.
+
+**Fix:** `profile` entfernt, nur `allow: ["session_status", "sessions_send"]` gesetzt.
+
+**Zusätzlich:** API von `openai-completions` auf `openai-responses` gewechselt. Beides funktioniert prinzipiell, aber `openai-responses` ist der Default.
+
+**Config (final):**
+```json
+"tools.byProvider": { "ollama/llama3.2:3b": { "allow": ["session_status", "sessions_send"] } }
+"models.providers.ollama.api": "openai-responses"
+"agents.defaults.heartbeat": { "every": "60m", "model": "ollama/llama3.2:3b", "target": "telegram" }
+```
+
+**Key Learning:** `profile` + `allow` in `byProvider` ist eine INTERSECTION, kein UNION. Wenn profile nur Tool A erlaubt und allow nur Tool B listet → leere Menge.
+
 ## Audio Processing
 
 - **Methode:** Groq Whisper API (`groq-sdk`) — NICHT lokal
@@ -39,8 +57,18 @@
 ## Skills & Config
 
 - **coding-agentoj9u entfernt** (2026-02-10): Fehlerhafter Skill mit garbled Slug, war Duplikat des built-in `coding-agent`. In Trash verschoben. OpenClaw verwendet jetzt den korrekten built-in Skill unter `/opt/homebrew/lib/node_modules/openclaw/skills/coding-agent`.
-- **Installierte Workspace-Skills:** brave-search, clawdex, dashboard-api, github, groq-whisper, openai-whisper, proactive-agent, self-improving-agent
+- **openai-whisper entfernt** (2026-02-10): Deprecated, Groq Whisper ersetzt es. In Trash verschoben.
+- **Installierte Workspace-Skills:** brave-search, clawdex, dashboard-api, github, groq-whisper, proactive-agent, self-improving-agent
 - **Security Audit (2026-02-10):** Alle 8 Skills gescannt mit skill-scanner (behavioral). LLM+Meta-Analyzer nicht verfügbar (API-Key fehlt). Ergebnis: 7/8 SAFE (nur INFO: missing license). clawdex: CRITICAL-Finding = **False Positive** (YARA triggered auf Doku-Text "Steal credentials", nicht echtem Code). Alle Skills nutzbar.
+- **Skill-Installationen:** Ab 2026-02-10 **gesperrt** — kein Skill wird ohne Laurenz' ausdrückliches OK installiert.
+
+## Lobster Workflows
+
+- **Evaluiert:** 2026-02-10 — Lobster ist ein optionales Plugin Tool für deterministische Multi-Step-Pipelines mit Approval-Gates
+- **Status:** CLI nicht installiert, Tool nicht in Config enabled
+- **Brauchen wir das?** Ja, sehr wahrscheinlich für CI/Newsletter/Enrichment Workflows (Research → Approval → Publish)
+- **Installation:** Pending nach Business-Modell-Wahl. Wenn Workflows definiert sind: (1) Lobster CLI von github.com/openclaw/lobster installieren, (2) `tools.alsoAllow: ["lobster"]` in Config, (3) eigene .lobster Workflow-Files schreiben
+- **ClawHub Skills:** `lobster v1.0.1` und `lobster-jobs v1.0.0` evaluiert — NICHT installieren, wir schreiben eigene Workflows
 
 ## Proactive Agent Implementation
 
