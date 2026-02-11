@@ -3,9 +3,11 @@
 ## Stand
 
 - **Bootstrap:** 2026-02-09 — Erster Start, Workspace eingerichtet
-- **Business-Modell:** Noch nicht gewählt. 4 Optionen ausgearbeitet (CI, Newsletter, Data Enrichment, Lead Gen)
-- **Dashboard:** Phase 1 — Coding-Spec existiert, Implementation offen
-- **Scout:** Noch nicht live
+- **Business-Modell:** APPOINTMENT SETTING (DACH SaaS/B2B Scale-ups) — All-in seit 2026-02-11
+- **Dashboard:** Phase 2 LIVE (2026-02-11) — Pipeline, Research, Insights, Cost Tracking, SSE Live Updates
+- **Dashboard CLI:** Deployed (2026-02-11) — `dashboard` command globally available (npm link)
+- **Scout:** LIVE (2026-02-11) — workspace-scout repo, Heartbeat 60min, DM with Laurenz
+- **Autonomous Workflow:** ACTIVE (2026-02-11) — Hektor/Scout HEARTBEAT.md, Dashboard-driven loops
 
 ## Laurenz
 
@@ -26,6 +28,8 @@
 | Opus | Irreversibel / `/opus` / Quality Audit | Verträge, Pricing, Strategie-Pivots, Weekly Audit |
 
 **Sub-Agents:** NUR für parallele, isolierte Background-Arbeit (Research, Bulk-Processing). NIEMALS für Model-Switching oder Config-Tasks.
+
+**Model Routing Framework v2:** 4-Stufen Decision Tree dokumentiert in `openclaw-dashboard/docs/frameworks/model-routing.md` (2026-02-10). Stufe 1: Irreversibel/Rechtlich → Opus (5%). Stufe 2-4: Complex/High-Cost/Creative → Haiku (85%) oder Sonnet (10%). Budget: ~$105-165/Mo bei 150 Tasks/Woche. Compact version in AGENTS.md "Auto-Routing Protokoll".
 
 ## Ollama Heartbeat — GELÖST (2026-02-10)
 
@@ -92,6 +96,176 @@
 - **Install:** `cp plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.openclaw.subagent-webhook.plist`
 - **Sub-Agent Integration:** Set `SUBAGENT_CALLBACK_URL` env or pass `callbackUrl` to `reportComplete()`
 - **Status:** Installed as launchd service, active, tested (2026-02-10)
+
+## Dashboard pm2 Setup
+
+- **Config:** `openclaw-dashboard/ecosystem.config.js` — pm2 process manager for Dashboard
+- **Port:** 3000 (production mode)
+- **Env Vars:** `HEKTOR_WORKSPACE`, `SCOUT_WORKSPACE`
+- **Logs:** `~/.pm2/logs/dashboard-{out,error}.log`
+- **Note:** Gateway runs separately (not in pm2 ecosystem config)
+- **Status:** Config ready, pm2 setup pending (HEKTOR-004)
+
+## Appointment Setting Business — LIVE (2026-02-11)
+
+**Decision:** All-in auf Premium SaaS Appointment Setting (DACH)
+
+**Why AS > Lead Gen:**
+- Pricing: €250/Meeting vs €150/Lead
+- Margin: 60-80% vs 40-50%
+- Competition: KEINE großen AS-Agencies in DACH (Whitespace!)
+- Scout Research: `/docs/appointment-setting-dach-scenarios.md` (DACH market analysis)
+
+**Target ICP:**
+- DACH SaaS/B2B Scale-ups (Series A+)
+- 10-200 Mitarbeiter, €1M-€20M ARR
+- Budget: €1K-€3K/Monat
+
+**Pricing Model (Hybrid):**
+- €2.000 base retainer
+- €200/Meeting über 8 Meetings
+- Durchschnitt: €2.800/Monat pro Client (10-14 Meetings)
+
+**Financial Projections (Year 1):**
+- Month 1: €2.4K MRR (1 client)
+- Month 3: €8.4K MRR (3 clients)
+- Month 6: €22.4K MRR (8 clients)
+- Month 12: €33.6K MRR (12 clients) → €246K revenue, 99% margin
+
+**Tech Stack:**
+- Data: Apollo.io (€49/Mo), Hunter.io (€49/Mo)
+- Calendar: Calendly (€8/Mo)
+- Email: Client domains (SMTP) or own domain
+- Total Cost: €106/Mo + OpenClaw €50/Mo
+
+**Workflow (7 Phases):**
+1. Client Onboarding (Laurenz + Hektor)
+2. Lead Research (Scout: Apollo, 20-50 leads/week)
+3. Enrichment (Hektor: Hunter + Brave Search, scoring 1-10, filter 8+)
+4. Outreach Drafting (Hektor: 3 templates A/B/C)
+5. Outreach Execution (Hektor: send + track)
+6. Meeting Booking (Hektor: Calendly)
+7. Reporting (Hektor: weekly reports)
+
+**Scout/Hektor Split:**
+- Scout: Lead research + pre-enrichment (basic company data)
+- Hektor: Qualification (scoring), outreach, booking, reporting
+
+**Implementation Docs:**
+- `/docs/appointment-setting-dach-scenarios.md` (21KB, 3 scenarios)
+- `/docs/appointment-setting-implementation.md` (34KB, full workflow + tech + Week 1 plan)
+
+**Week 1 Timeline (Feb 12-16):**
+- Mon: APIs setup (Apollo, Hunter, Calendly)
+- Tue: Workflow implementation (Scout + Hektor)
+- Wed: Outreach testing (10 test emails)
+- Thu: Dashboard (AS Clients, Lead Pipeline, Outreach Metrics)
+- Fri: Integration + 20-lead batch test
+
+**Next Steps:**
+- Subscribe APIs (pending Laurenz GO)
+- Create #lead-gen topic in Telegram
+- Dashboard: AS Clients page, Lead Pipeline, Outreach Metrics, Weekly Reports
+
+## Telegram Architecture (2026-02-11)
+
+**Option 3 (Hybrid) — CHOSEN:**
+- DM = Primary communication (Laurenz ↔ Hektor, Laurenz ↔ Scout)
+- Group Topics = Business Results only (#lead-gen for AS results, #logs, #alerts)
+- Agents post to topics from DM sessions via `message` tool
+
+**Active Topics:**
+- #general (1)
+- #research (2) — Scout research output
+- #coordination (5) — Agent coordination
+- #logs (7) — Activity logs
+- #alerts (9) — Critical alerts + blockers
+- #lead-gen (TBD) — AS business results (leads, meetings, reports)
+
+**Deleted Topics (2026-02-11):**
+- #hektor (26), #scout (27) — redundant with DM architecture
+
+## Skills Installed (2026-02-11)
+
+**Original OpenClaw Skills (via Sub-Agent verification):**
+- clawhub v4.3.1 (skill management)
+- coding-agent v1.2.9 (background coding)
+- github v5.0.7 (gh CLI integration)
+- summarize v2.1.6 (transcripts, podcasts, URLs)
+- blogwatcher v1.5.2 (RSS monitoring)
+
+**Workspace Skills (pre-installed):**
+- brave-search, clawdex, dashboard-api, groq-whisper, proactive-agent, self-improving-agent, dashboard-cli
+
+**Skill Installation Protocol:**
+- Sub-Agent spawning with Clawdex + skill-scanner verification BEFORE reading SKILL.md
+- Security gate: NEVER read SKILL.md before verification
+
+**Removed Skills:**
+- agent-browser-clawdbot (redundant with built-in browser tool)
+- coding-agentoj9u (garbled duplicate)
+- openai-whisper (deprecated, replaced by groq-whisper)
+
+## Workspace File Management Strategy (2026-02-11)
+
+**Critical Discovery:** Config file size limits from hektor-setup.md (~/Hektor-Docs/hektor-setup.md Block 2):
+- SOUL.md: max 1.200 chars (~300 tokens)
+- IDENTITY.md: max 400 chars (~100 tokens)
+- USER.md: max 800 chars (~200 tokens)
+- AGENTS.md: max 3.200 chars (~800 tokens) ⚠️ Currently 12KB (4x over!)
+- TOOLS.md: max 1.200 chars (~300 tokens) ⚠️ Currently 1.436 chars (over!)
+- HEARTBEAT.md: max 600 chars (~150 tokens) ⚠️ Currently 1.491 chars (2.5x over!)
+- **Total bootstrap budget: ~7.400 chars (~1.850 tokens)**
+- MEMORY.md: Not defined, currently 10.8KB (on-demand load)
+
+**Impact:** Every single API call injects these files. HEARTBEAT.md especially burns tokens on every request.
+
+**Solutions under Investigation:**
+1. Create workspace-file-management Skill (workflow + enforcement)
+2. Research selective bootstrap loading (can we exclude files from auto-inject?)
+3. Pre-commit hook to block commits if files exceed limits
+4. Daily cron audit to flag over-limit files
+
+**Current Status:** workspace-file-management skill reviewed by sub-agent. Three P0 blockers identified:
+- Need pre-commit hook code
+- Need MEMORY.md added to limits table
+- Current files already violate the limits
+
+**Key Question:** Can OpenClaw be configured to NOT load certain bootstrap files? (e.g., HEARTBEAT.md only for Ollama, not for normal chats). If yes, could reduce bootstrap tokens from 1.850 to ~600-800.
+
+## Model Routing Rule Update (2026-02-11)
+
+**New Rule — SILENT:** Model routing decisions (Haiku→Sonnet→Opus) must be made internally. Do NOT explain in chat ("Model Routing: Complex reasoning..."). Evaluate silently, then respond.
+
+**Enforcement:** Added to AGENTS.md under Auto-Routing section.
+
+## Documentation Workflow (2026-02-11)
+
+**New Protocol — Task FIRST:**
+1. Create task in Dashboard
+2. Write doc in `openclaw-dashboard/docs/` (NOT in workspace /docs/)
+3. Commit + Push
+4. Link doc in task (`linkedDocs`)
+5. Mark task done
+
+**Rationale:** Dashboard repo = where docs are stored and indexed. Workspace /docs/ files not visible in Dashboard.
+
+## Hektor-Docs Access (2026-02-11)
+
+**Problem Solved:** Permission issue accessing ~/Hektor-Docs resolved (timing issue).
+
+**Files Found:**
+- hektor-setup.md (64KB) — Original Hektor bootstrap + config guide
+- hektor-bootstrap.md (29KB)
+- hektor-docs structure available for consultation
+
+**Key Content:**
+- Config file size limits (referenced above)
+- Token optimization strategies (Ollama, Model Routing, Session Management)
+- Multi-agent architecture vision
+- Security rules + autonomy levels
+
+**Status:** HEKTOR-003 task created (Find & Review Hektor-Docs config limits). Can reference this now.
 
 ## Routing Learnings
 

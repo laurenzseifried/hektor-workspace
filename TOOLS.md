@@ -9,8 +9,6 @@
 | #coordination | 5 | Agent Coordination |
 | #logs | 7 | Activity Logs |
 | #alerts | 9 | Critical Alerts & Blockers |
-| #hektor | 26 | Hektor Exclusive (Laurenz nur) |
-| #scout | 27 | Scout Exclusive |
 
 **Cross-Topic Posting:** `message action:send channel:telegram target:-1003808534190 threadId:9 message:"..."`
 

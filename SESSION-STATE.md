@@ -4,69 +4,67 @@
 
 **Regel:** Dies ist flüchtig (Session-Scope). Nach jeder wichtigen Korrektur/Entscheidung von Laurenz → SOFORT hier notieren, DANN entsprechend handeln.
 
-**Nicht löschen** — nur nach Session-Ende (dann → MEMORY.md migr ieren).
+**Nicht löschen** — nur nach Session-Ende (dann → MEMORY.md migrieren).
 
 ---
 
-## Session Info
+## Current Task
 
-- **Session Start:** 2026-02-10 09:51
-- **Current Model:** Sonnet
-- **Context Focus:** Proactive-Agent v3.0.0 Implementation
-- **Task:** Implement WAL Protocol, Working Buffer, VFM Scoring in code + docs
+**WORKSPACE FILE OPTIMIZATION:** Reduce bootstrap token burn by trimming + selective loading investigation
 
----
+**Status:** Design phase — workspace-file-management skill needs P0 fixes before deployment
 
-## WAL Log (Corrections/Decisions)
+**Critical Blocker:** Files already 2.5-4x over limits (HEARTBEAT.md +891 chars, AGENTS.md +236 chars)
 
-### [2026-02-10 09:51] Relentless Resourcefulness Protocol
-
-**From:** Ciphershell (Laurenz)  
-**Message ID:** 334-337  
-**Context:** I was blocking when hitting unknowns instead of exploring + solving first.
-
-**Decision:**
-- Never stop at a block without 5-10 exploration attempts
-- Escalate ONLY after exhaustion OR when Matrix-Decision required (Sonnet vs Opus for irreversible)
-- OR when business/security decision only user can make
-
-**Action Taken:**
-- Read OpenClaw docs locally (sessions, models, slash commands)
-- Found `/model sonnet` solution in `/opt/homebrew/lib/node_modules/openclaw/docs/tools/slash-commands.md`
-- Documented finding in memory/2026-02-10.md
-- Committed to git
-
-**Impact:**
-- No more sub-agent spawning for model selection ✓
-- `/model` directives for session-level model switching ✓
-- Sub-agents reserved for parallel/background work only ✓
+**Next Steps:**
+1. **Research selective bootstrap loading** (can OpenClaw exclude files from auto-inject?)
+2. **Create workspace-file-management Skill** with pre-commit hook code
+3. **Trim current files** (AGENTS.md → 3.2K, HEARTBEAT.md → 600 chars)
+4. **Deploy daily audit cron** to prevent future overages
 
 ---
 
-## Current Focus
+## Open Decisions (2026-02-11 evening)
 
-**Implementing:** Proactive-Agent v3.0.0 with `/model sonnet` pattern
+1. **Selective bootstrap loading** — Should we configure OpenClaw to NOT auto-inject certain files?
+   - Option A: Load all 6 files on every message (current, 1.850 tokens)
+   - Option B: Load only essential 3 (AGENTS.md, SOUL.md, USER.md) normally; HEARTBEAT.md only for Ollama heartbeats
+   - Impact: Could reduce from 1.850 → 600-800 tokens per request
+   
+2. **MEMORY.md size limit** — What should the limit be?
+   - Sub-agent suggested: 3.000 chars (on-demand, not auto-loaded)
+   - Currently: 10.8KB (needs trimming)
 
-1. ✅ Decision discovered + documented
-2. ✅ AGENTS.md enhancement (Sessions vs Sub-Agents clarity)
-3. ✅ memory/working-buffer.md structure finalized
-4. ✅ notes/areas/proactive-tracker.md created
-5. ✅ Test run in real workflow
-
-**STATUS:** All items complete (Session 7, 08:55-09:39 GMT+1). System 100% operational.
-
----
-
-## Model State
-
-**Active Session Model:** Sonnet (switched via `/model sonnet`)  
-**Reason:** Config/creativity work on Proactive-Agent patterns
+3. **Workspace-file-management skill priority** — Phase 1 (now) or Phase 2 (after AS stabilized)?
 
 ---
 
-## Next State Reset
+## Blockers
 
-To end this session's WAL:
-1. Copy relevant entries to MEMORY.md (curated)
-2. Clear SESSION-STATE.md (or keep for history)
-3. Record final status in memory/2026-02-10.md
+1. **Selective bootstrap loading unclear** — Need OpenClaw config docs clarification
+2. **Skill not enforced** — Pre-commit hook missing from workspace-file-management design
+3. **Current files over limits** — HEARTBEAT.md +891, AGENTS.md +236 chars
+4. **MEMORY.md undefined** — No size limit in hektor-setup.md
+
+---
+
+## Architecture Notes
+
+**AS Workflow (7 Phases):**
+1. Client Onboarding (Laurenz sales call + Hektor setup)
+2. Lead Research (Scout: Apollo, 20-50 leads/week)
+3. Enrichment (Hektor: Hunter + Brave Search, score 1-10, filter 8+)
+4. Outreach Drafting (Hektor: 3 templates A/B/C)
+5. Outreach Execution (Hektor: send + track)
+6. Meeting Booking (Hektor: Calendly)
+7. Reporting (Hektor: weekly reports)
+
+**Dashboard Changes Needed:**
+- AS Clients page (client list, ICP management, metrics)
+- Lead Pipeline (Kanban: Raw → Enriched → Contacted → Replied → Booked → Completed)
+- Outreach Metrics (charts: emails sent, reply rate, booking rate)
+- Weekly Reports (auto-generated PDFs)
+
+**Implementation Docs:**
+- `/docs/appointment-setting-dach-scenarios.md` (3 scenarios, financial projections)
+- `/docs/appointment-setting-implementation.md` (full workflow, tech setup, Week 1 plan)

@@ -24,6 +24,10 @@
     "openai-whisper": {
       "version": "1.0.0",
       "installedAt": 1770703376684
+    },
+    "agent-browser-clawdbot": {
+      "version": "0.1.0",
+      "installedAt": 1770809211044
     }
   }
 }

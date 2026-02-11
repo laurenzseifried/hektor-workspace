@@ -46,6 +46,19 @@ Bevor du einen Task an ein Model sendest, antworte auf diese **drei Fragen**:
 
 ---
 
+## Scoring the 3 Questions
+
+After answering each question:
+- **Count the YESes**
+  - **0 YES** → Haiku ✅ (85% of tasks — pattern matching)
+  - **1-2 YES** → Sonnet ⚠️ (10% of tasks — judgment calls)
+  - **3 YES** → Sonnet ⚠️ (10% of tasks — complex + high-cost + creative)
+
+- **Explicit `/opus` from Laurenz** → Opus 🔴 (override scoring)
+- **Irreversible or Legal** → Opus 🔴 (contracts, pricing, compliance, strategy pivots)
+
+---
+
 ## Use Haiku (85% of Tasks)
 
 Pattern-matching, structured, or clear-rule tasks. **Haiku excels here and costs 1/10th of Sonnet.**
@@ -184,20 +197,42 @@ Task arrives
 
 ---
 
+## Use Opus (5% of Tasks — Irreversible & Legal)
+
+**ONLY for tasks that cannot be undone or have legal consequences:**
+
+**Business & Legal:**
+- Contracts, SLAs, business agreements
+- Pricing models (long-term revenue implications)
+- Compliance outputs (DSGVO, audit responses)
+- Strategy pivots (business model changes)
+- Final commitments (guarantees, warranties, public promises)
+
+**Quality Assurance:**
+- Weekly quality audit (review own outputs for safety)
+- Security approval (production changes)
+- Financial decisions (budget, vendor contracts)
+
+**Rule:** If the decision is still binding in 6 months or lawyers might be involved → Opus.
+
+---
+
 ## Integration with Hektor's Auto-Routing
 
-Every message from Laurenz triggers this flow **mentally** before responding:
+**ENFORCEMENT:** Every task (Laurenz message, Scout message, Cron job, Sub-Agent result, self-initiated) requires model evaluation:
 
-1. **Read the task carefully**
-2. **Ask the 3 questions** (complex? high-cost? creative?)
+1. **Evaluate before executing** (4-Stufen Framework)
+2. **Ask the 3 questions** (complex reasoning? high cost of failure? creativity/nuance?)
 3. **Count the YESes:**
-   - 0 YES → Haiku
-   - 1-2 YES → Sonnet
-   - 3 YES → Sonnet (or Opus if Laurenz indicated)
-   - Explicit `/opus` or Legal/Compliance → Opus
+   - 0 YES → Haiku ✅ (pattern matching, CRUD, data ops)
+   - 1-2 YES → Sonnet ⚠️ (judgment calls, critical work)
+   - 3 YES → Sonnet ⚠️ (complex + high-cost + creative)
+   - Explicit `/opus` from Laurenz → Opus 🔴 (override)
+   - Irreversible/Legal → Opus 🔴 (auto-escalate)
 
-4. **Execute on selected model**
-5. **After Sonnet/Opus work → `/model haiku` to reset**
+4. **Set model:** Use `session_status(model="haiku|sonnet|opus")` tool call (reliable, programmatic)
+5. **Execute task** on selected model
+6. **After Sonnet/Opus work → Reset:** `session_status(model="haiku")` to return to default
 
 ---
 
@@ -224,10 +259,17 @@ Every message from Laurenz triggers this flow **mentally** before responding:
 
 ---
 
-## What's Next
+## Status & Next Steps
 
-- Review this framework with Laurenz
-- Add/remove categories as needed
-- Embed decision flow in AGENTS.md
-- Monitor actual routing vs. planned routing
-- Adjust if patterns emerge (e.g., "Sonnet tasks taking 3x longer than expected")
+**✅ ACTIVE (2026-02-11)**
+- Framework complete and integrated into AGENTS.md
+- ENFORCEMENT rule implemented (evaluate before EVERY task)
+- Model reset method updated (session_status tool, not slash commands)
+- Opus territory documented
+- Quick reference card included
+
+**Next Steps:**
+- Monitor actual routing patterns (log which model used + why)
+- Collect feedback from Laurenz after week 1 execution
+- Adjust categories/examples if needed based on learnings
+- Consider token budget tracking (Haiku vs Sonnet cost efficiency)
