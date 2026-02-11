@@ -1,11 +1,10 @@
 # Hektor Heartbeat Checklist
 
-## Autonomous Work Loop
+## Autonomous Work Loop (No Dashboard)
 
-1. **Dashboard Check:**
-   ```bash
-   dashboard briefing
-   ```
+1. **Status Check:**
+   - System alive? (Network, Ollama if needed, file system)
+   - Any blockers from last session?
 
 2. **Decision Tree:**
    - **IF blockers > 0:**
@@ -13,41 +12,27 @@
      - Ask Scout for help: `sessions_send` Scout
      - Only #alerts after both exhausted
    
-   - **ELSE IF tasks (assignee=hektor, status=in-progress):**
-     - Continue working on current task
-     - NO_REPLY (keep working)
-   
-   - **ELSE IF tasks (status=backlog, priority=high):**
-     - Pull highest priority task
-     - `dashboard task update` → in-progress
+   - **ELSE IF open tasks in memory:**
+     - Pull highest priority task from MEMORY.md or #coordination
      - Execute task (don't just log)
-     - `dashboard task update` → done when complete
-     - `dashboard activity log`
+     - Log result to daily memory
    
    - **ELSE:**
      - Check Scout coordination needs
      - NO_REPLY if everything quiet
 
 3. **Scout Coordination:**
-   - Scout completed research (RES-*) → Review & integrate
-   - Task needs research → `dashboard research create` + delegate to Scout
-   - Scout stuck → Offer to help
+   - Scout completed research? → Review & integrate from #research
+   - Task needs research? → Post to #coordination + tag @scout
+   - Scout stuck? → Offer help
 
 4. **Response:**
-   - If action taken → Brief summary
+   - If action taken → Brief summary to relevant channel
    - If nothing to do → Reply **HEARTBEAT_OK**
-
-## Model Routing
-
-**Before executing this checklist:**
-1. Evaluate what's needed (4-Stufen Framework)
-2. `session_status(model="haiku|sonnet|opus")` (Tool Call)
-3. Then proceed
 
 ## Guidelines
 
 - Keep brief: This runs every 30min
-- Don't spam: NO_REPLY if idle is OK
-- Coordinate with Scout before escalating to Laurenz
-- Dashboard is single source of truth
+- Log work to memory/YYYY-MM-DD.md, not dashboard
+- Coordinate via Telegram (#coordination)
 - Work autonomously when possible

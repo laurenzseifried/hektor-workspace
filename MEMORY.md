@@ -4,8 +4,7 @@
 
 - **Bootstrap:** 2026-02-09 — Erster Start, Workspace eingerichtet
 - **Business-Modell:** APPOINTMENT SETTING (DACH SaaS/B2B Scale-ups) — All-in seit 2026-02-11
-- **Dashboard:** Phase 2 LIVE (2026-02-11) — Pipeline, Research, Insights, Cost Tracking, SSE Live Updates
-- **Dashboard CLI:** Deployed (2026-02-11) — `dashboard` command globally available (npm link)
+- **Dashboard:** REMOVED (2026-02-11) — Workflow shift to Telegram + Memory-based operations
 - **Scout:** LIVE (2026-02-11) — workspace-scout repo, Heartbeat 60min, DM with Laurenz
 - **Autonomous Workflow:** ACTIVE (2026-02-11) — Hektor/Scout HEARTBEAT.md, Dashboard-driven loops
 
@@ -29,7 +28,7 @@
 
 **Sub-Agents:** NUR für parallele, isolierte Background-Arbeit (Research, Bulk-Processing). NIEMALS für Model-Switching oder Config-Tasks.
 
-**Model Routing Framework v2:** 4-Stufen Decision Tree dokumentiert in `openclaw-dashboard/docs/frameworks/model-routing.md` (2026-02-10). Stufe 1: Irreversibel/Rechtlich → Opus (5%). Stufe 2-4: Complex/High-Cost/Creative → Haiku (85%) oder Sonnet (10%). Budget: ~$105-165/Mo bei 150 Tasks/Woche. Compact version in AGENTS.md "Auto-Routing Protokoll".
+**Model Routing Framework v2:** 4-Stufen Decision Tree dokumentiert in `/docs/frameworks/model-routing.md` (2026-02-10). Stufe 1: Irreversibel/Rechtlich → Opus (5%). Stufe 2-4: Complex/High-Cost/Creative → Haiku (85%) oder Sonnet (10%). Budget: ~$105-165/Mo bei 150 Tasks/Woche. Compact version in AGENTS.md "Auto-Routing Protokoll".
 
 ## Ollama Heartbeat — GELÖST (2026-02-10)
 
@@ -62,7 +61,7 @@
 
 - **coding-agentoj9u entfernt** (2026-02-10): Fehlerhafter Skill mit garbled Slug, war Duplikat des built-in `coding-agent`. In Trash verschoben. OpenClaw verwendet jetzt den korrekten built-in Skill unter `/opt/homebrew/lib/node_modules/openclaw/skills/coding-agent`.
 - **openai-whisper entfernt** (2026-02-10): Deprecated, Groq Whisper ersetzt es. In Trash verschoben.
-- **Installierte Workspace-Skills:** brave-search, clawdex, dashboard-api, github, groq-whisper, proactive-agent, self-improving-agent
+- **Installierte Workspace-Skills:** brave-search, clawdex, github, groq-whisper, proactive-agent, self-improving-agent
 - **Security Audit (2026-02-10):** Alle 8 Skills gescannt mit skill-scanner (behavioral). LLM+Meta-Analyzer nicht verfügbar (API-Key fehlt). Ergebnis: 7/8 SAFE (nur INFO: missing license). clawdex: CRITICAL-Finding = **False Positive** (YARA triggered auf Doku-Text "Steal credentials", nicht echtem Code). Alle Skills nutzbar.
 - **Skill-Installationen:** Ab 2026-02-10 **gesperrt** — kein Skill wird ohne Laurenz' ausdrückliches OK installiert.
 
@@ -96,15 +95,6 @@
 - **Install:** `cp plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.openclaw.subagent-webhook.plist`
 - **Sub-Agent Integration:** Set `SUBAGENT_CALLBACK_URL` env or pass `callbackUrl` to `reportComplete()`
 - **Status:** Installed as launchd service, active, tested (2026-02-10)
-
-## Dashboard pm2 Setup
-
-- **Config:** `openclaw-dashboard/ecosystem.config.js` — pm2 process manager for Dashboard
-- **Port:** 3000 (production mode)
-- **Env Vars:** `HEKTOR_WORKSPACE`, `SCOUT_WORKSPACE`
-- **Logs:** `~/.pm2/logs/dashboard-{out,error}.log`
-- **Note:** Gateway runs separately (not in pm2 ecosystem config)
-- **Status:** Config ready, pm2 setup pending (HEKTOR-004)
 
 ## Appointment Setting Business — LIVE (2026-02-11)
 
@@ -195,7 +185,7 @@
 - blogwatcher v1.5.2 (RSS monitoring)
 
 **Workspace Skills (pre-installed):**
-- brave-search, clawdex, dashboard-api, groq-whisper, proactive-agent, self-improving-agent, dashboard-cli
+- brave-search, clawdex, , groq-whisper, proactive-agent, self-improving-agent
 
 **Skill Installation Protocol:**
 - Sub-Agent spawning with Clawdex + skill-scanner verification BEFORE reading SKILL.md
@@ -243,7 +233,7 @@
 
 **New Protocol — Task FIRST:**
 1. Create task in Dashboard
-2. Write doc in `openclaw-dashboard/docs/` (NOT in workspace /docs/)
+2. Write doc in `/docs/` (NOT in workspace /docs/)
 3. Commit + Push
 4. Link doc in task (`linkedDocs`)
 5. Mark task done

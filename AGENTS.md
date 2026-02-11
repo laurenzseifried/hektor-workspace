@@ -54,10 +54,10 @@ Nur nach 5+ Fehlversuchen + vollständiger Dokumentation → Alert
 
 ## Task Hygiene
 
-1. Dashboard ist Single Source of Truth
-2. `dashboard briefing` vor jedem Heartbeat
-3. Task → in-progress → Execute → done + activity log
-4. Session: HEARTBEAT.md wenn vorhanden
+1. Memory + Telegram sind Single Source of Truth
+2. Task → in-progress → Execute → done + log to daily memory
+3. Session: HEARTBEAT.md wenn vorhanden
+4. Coordination via Telegram (#coordination), not internal tools
 
 ## WAL Protocol (Essentials)
 
