@@ -33,59 +33,36 @@ if (!query) {
 }
 
 async function fetchBraveResults(query, numResults) {
-	const url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+	const apiKey = process.env.BRAVE_API_KEY;
+	if (!apiKey) {
+		throw new Error("BRAVE_API_KEY environment variable not set");
+	}
+	
+	const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=${numResults}`;
 	
 	const response = await fetch(url, {
 		headers: {
-			"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
-			"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-			"Accept-Language": "en-US,en;q=0.9",
-			"sec-ch-ua": '"Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"',
-			"sec-ch-ua-mobile": "?0",
-			"sec-ch-ua-platform": '"macOS"',
-			"sec-fetch-dest": "document",
-			"sec-fetch-mode": "navigate",
-			"sec-fetch-site": "none",
-			"sec-fetch-user": "?1",
+			"Accept": "application/json",
+			"X-Subscription-Token": apiKey,
 		}
 	});
 	
 	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+		const errorData = await response.json().catch(() => ({}));
+		throw new Error(`Brave API ${response.status}: ${errorData.error?.detail || response.statusText}`);
 	}
 	
-	const html = await response.text();
-	const dom = new JSDOM(html);
-	const doc = dom.window.document;
+	const data = await response.json();
 	
-	const results = [];
-	
-	// Find all search result snippets with data-type="web"
-	const snippets = doc.querySelectorAll('div.snippet[data-type="web"]');
-	
-	for (const snippet of snippets) {
-		if (results.length >= numResults) break;
-		
-		// Get the main link and title
-		const titleLink = snippet.querySelector('a.svelte-14r20fy');
-		if (!titleLink) continue;
-		
-		const link = titleLink.getAttribute('href');
-		if (!link || link.includes('brave.com')) continue;
-		
-		const titleEl = titleLink.querySelector('.title');
-		const title = titleEl?.textContent?.trim() || titleLink.textContent?.trim() || '';
-		
-		// Get the snippet/description
-		const descEl = snippet.querySelector('.generic-snippet .content');
-		let snippetText = descEl?.textContent?.trim() || '';
-		// Remove date prefix if present
-		snippetText = snippetText.replace(/^[A-Z][a-z]+ \d+, \d{4} -\s*/, '');
-		
-		if (title && link) {
-			results.push({ title, link, snippet: snippetText });
-		}
+	if (!data.web || !data.web.results) {
+		return [];
 	}
+	
+	const results = data.web.results.map(item => ({
+		title: item.title,
+		link: item.url,
+		snippet: item.description || "",
+	}));
 	
 	return results;
 }

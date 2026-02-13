@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-02-13T01:02:31.099Z",
+  "blacklist": [
+    "651ee6899d295da6a48882fcc2a446d4",
+    "8001930fe538421520defe058e9056d9",
+    "f9e2e20a41073cc9832b9c7c43cf17ef",
+    "1fc34914795277a89f42f8e792126965",
+    "52c9f26fbd91d1afd49763151625c9f2",
+    "51fd2996aa209cedfa9cfbcb005548e7",
+    "9a548625fb39da67c303cce2f84016ec",
+    "14bd46f3ff025558a481e38ad95b9c7f",
+    "376defd45778b48a7c0926e46891a7bf"
+  ],
+  "refreshTokens": []
+}

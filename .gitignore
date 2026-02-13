@@ -1,1 +1,30 @@
 .DS_Store
+
+# Secrets and sensitive data
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Webhook results (may contain sensitive task data)
+.subagent-results/
+*.subagent-result.json
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Session transcripts (may contain sensitive conversations)
+.transcripts/
+session-*.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

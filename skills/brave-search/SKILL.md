@@ -5,7 +5,7 @@ description: Web search and content extraction via Brave Search API. Use for sea
 
 # Brave Search
 
-Headless web search and content extraction using Brave Search. No browser required.
+Headless web search and content extraction using Brave Search REST API. No browser required.
 
 ## Setup
 
@@ -16,7 +16,9 @@ cd ~/Projects/agent-scripts/skills/brave-search
 npm ci
 ```
 
-Needs env: `BRAVE_API_KEY`.
+Requires env: `BRAVE_API_KEY` (from https://api.search.brave.com dashboard).
+
+**Fixed 2026-02-12:** Switched from web scraping to official REST API to avoid rate limits on free tier.
 
 ## Search
 
