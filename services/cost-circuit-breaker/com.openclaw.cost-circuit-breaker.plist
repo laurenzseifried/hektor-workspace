@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openclaw.cost-circuit-breaker</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/laurenz/.openclaw/workspace/services/cost-circuit-breaker/server.js</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/cost-circuit-breaker</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>CIRCUIT_BREAKER_PORT</key>
+        <string>3003</string>
+        <key>OPENCLAW_GATEWAY_TOKEN</key>
+        <string>***REDACTED***</string>
+        <key>HEKTOR_BOT_TOKEN</key>
+        <string>***REDACTED***</string>
+        <key>AGENTMAIL_API_KEY</key>
+        <string>am_f0fbaa7911ea6d69819768005489b7018bd9a6ea91eb63fee38c471f18786c89</string>
+        <key>CIRCUIT_BREAKER_WARNING</key>
+        <string>100</string>
+        <key>CIRCUIT_BREAKER_SOFT</key>
+        <string>250</string>
+        <key>CIRCUIT_BREAKER_HARD</key>
+        <string>500</string>
+        <key>CIRCUIT_BREAKER_EMERGENCY</key>
+        <string>1000</string>
+        <key>CIRCUIT_BREAKER_EMAIL</key>
+        <string>laurenz.seifried@gmail.com</string>
+        <key>CIRCUIT_BREAKER_TELEGRAM_TOPIC</key>
+        <string>9</string>
+        <key>CIRCUIT_BREAKER_TELEGRAM_CHAT</key>
+        <string>-1003808534190</string>
+        <key>AGENTMAIL_INBOX</key>
+        <string>hektor@agentmail.to</string>
+    </dict>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/cost-circuit-breaker/stdout.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/cost-circuit-breaker/stderr.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>

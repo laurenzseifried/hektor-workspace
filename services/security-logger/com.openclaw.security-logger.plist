@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openclaw.security-logger</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/laurenz/.openclaw/workspace/services/security-logger/server.js</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/security-logger</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LOGGER_PORT</key>
+        <string>9000</string>
+        <key>OPENCLAW_GATEWAY_TOKEN</key>
+        <string>***REDACTED***</string>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/security-logger/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/laurenz/.openclaw/workspace/services/security-logger/stderr.log</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StartInterval</key>
+    <integer>86400</integer>
+</dict>
+</plist>

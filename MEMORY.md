@@ -4,9 +4,10 @@
 
 - **Bootstrap:** 2026-02-09 — Erster Start, Workspace eingerichtet
 - **Business-Modell:** APPOINTMENT SETTING (DACH SaaS/B2B Scale-ups) — All-in seit 2026-02-11
-- **Dashboard:** REMOVED (2026-02-11) — Workflow shift to Telegram + Memory-based operations
+- **Dashboard:** ACTIVE (localhost:3000, pm2) — Tasks, Projects, Activity, Memory APIs operational
 - **Scout:** LIVE (2026-02-11) — workspace-scout repo, Heartbeat 60min, DM with Laurenz
 - **Autonomous Workflow:** ACTIVE (2026-02-11) — Hektor/Scout HEARTBEAT.md, Dashboard-driven loops
+- **Cron Jobs:** 8 active (Backup 1AM, Audit 9PM, Briefing 8AM, Weekly Mon 10AM)
 
 ## Laurenz
 
@@ -115,6 +116,19 @@
 - €2.000 base retainer
 - €200/Meeting über 8 Meetings
 - Durchschnitt: €2.800/Monat pro Client (10-14 Meetings)
+
+## KontaktManufaktur — Brand & Infra (2026-02-13)
+
+**Brand:** KontaktManufaktur
+**Outreach Domain:** hallo-kontakt-manufaktur.de (GoDaddy)
+**Stack:** Google Workspace (3 Accounts) + Instantly.ai + Hunter.io + DeBounce/ZeroBounce
+**Kosten:** ~125 EUR/Mo
+**Conversion:** Calendly → AI Reply Agent (later)
+**Dashboard:** Projekt + Task KONTAKTMANUFAKTUR-001 + 2 Docs (timeline, setup guide)
+**Playbook:** Matt Ganzak Cold Outreach (9 Phasen, Signal Detection → Dashboard)
+**Architecture:** Hektor als Router, Sub-Agents für Execution, Task-Folder-Struktur
+**Status:** Woche 1 — Domain gekauft, Google Workspace + DNS + Instantly als nächstes
+**Scout:** On hold (kein Heartbeat, reagiert nur auf direkte Ansprache)
 
 **Financial Projections (Year 1):**
 - Month 1: €2.4K MRR (1 client)
@@ -256,6 +270,33 @@
 - Security rules + autonomy levels
 
 **Status:** HEKTOR-003 task created (Find & Review Hektor-Docs config limits). Can reference this now.
+
+## Infrastructure & Operations (2026-02-13)
+
+**Cron Jobs (Active):**
+- Daily Backup (1AM): Git commit workspace
+- Token Audit (9PM): Session token usage check
+- Morning Briefing (8AM): Scout report to Telegram
+- Weekly Maintenance (Mon 10AM): Health check
+
+**Dashboard (localhost:3000, PM2):**
+- Tasks API: Operational (12+ entries)
+- Projects API: Operational (3 active)
+- Activity API: Operational (logging events)
+- Memory API: Ready (workspace paths pending config)
+- PM2 Status: Running, auto-restart enabled
+- Stability: Production migration complete (no crashes)
+
+**Environment & Multi-Agent:**
+- Hektor Workspace: ~/.openclaw/workspace
+- Scout Workspace: ~/.openclaw/workspace-scout
+- PM2 Note: Env vars require ecosystem.config.js (--env-file not supported)
+- Ollama: Running (llama3.2:3b) for heartbeats + fallback
+
+**Integration Stack:**
+- Telegram: Heartbeat reports, alerts (topics #general, #research, #coordination, #logs, #alerts)
+- GitHub: Workspace backups, dashboard source
+- OpenClaw Gateway: Core orchestration (localhost:18789)
 
 ## Routing Learnings
 

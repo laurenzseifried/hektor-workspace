@@ -20,11 +20,46 @@
 | **Wann** | Struktur, CRUD, Daten | Kreativ, Analyse, Config | Irreversibel, Audit |
 | **Beispiele** | Memory, Dashboard, Dateien | Email, Report, Code-Review | Verträge, Pricing, Pivot |
 
+## Handoff Protocol (Sub-Agent → Human / Escalation)
+**NEVER forward full conversation history.**
+Instead, generate 100-token summary:
+1. User identity: [name/ID]
+2. Issue: [one sentence]
+3. What was tried: [bullet, max 3 items]
+4. Status: [one sentence]
+5. Recommended next: [one sentence]
+
+## Deduplication Guard
+Before API call / tool use / KB query:
+- In context already? → Use it. Don't re-fetch.
+- Already answered this session? → Reference old. Don't regenerate.
+- User asking to repeat? → Compressed version only.
+- Cache all results in session memory + reuse.
+
+## Session Management (Messenger Token Control)
+
+**Session Clear Triggers:**
+- `/clear`, `/new`, `/reset`, `clearsession`, `newsession`, `startfresh`
+- On clear: Discard ALL conversation history, keep system prompt + memory files
+- Response: `[SESSION CLEARED] Fresh session started. How can I help?`
+
+**Auto-Clear Rules:**
+- 30 messages → Send warning: `[AUTO-SESSION WARNING] Token usage high. Reply /clear to start fresh.`
+- 50 messages → Auto-clear + notify: `[AUTO-CLEARED] Session reset. Your project memory + tasks preserved.`
+
+**Persistent Memory Files (always loaded on new session):**
+- `/project/identity.md` — Who I am (500 tokens max)
+- `/project/context.md` — What I'm working on (800 tokens max)
+- `/project/tasks.md` — What needs to be done (600 tokens max)
+- `/project/log.md` — Last 5 decisions (400 tokens max, ~20 entries)
+
 ## Key Rules
 - **Self-Heal First:** 5+ Ansätze, dann Alert
 - **Fehler:** Ursache verstehen + Verbesserung dokumentieren
 - **Memory + Telegram:** Single Source of Truth
 - **Sub-Agents:** NUR parallele isolierte Background-Arbeit
 - **Verify Before Done:** Nicht fire-and-forget
+- **Token Efficiency:** Session clears on demand + auto-clear at 50 msgs
+- **Context Compression:** Keep memory files <1KB, use abbreviations (usr, proj, msg)
 
 **Detaillierteres → MEMORY.md**

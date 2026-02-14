@@ -1,0 +1,17 @@
+# OpenClaw Backup & Disaster Recovery Cron Schedule
+# Add to crontab: crontab -e
+
+# Full backup daily at 2 AM
+0 2 * * * export AWS_REGION=us-east-1 && bash /Users/laurenz/.openclaw/workspace/scripts/backup-recovery/backup.sh full >> /tmp/openclaw-backup.log 2>&1
+
+# Incremental backup every 6 hours
+0 */6 * * * export AWS_REGION=us-east-1 && bash /Users/laurenz/.openclaw/workspace/scripts/backup-recovery/backup.sh incremental >> /tmp/openclaw-backup.log 2>&1
+
+# Backup verification daily at 4 AM
+0 4 * * * bash /Users/laurenz/.openclaw/workspace/scripts/backup-recovery/verify-backup.sh >> /tmp/openclaw-verify.log 2>&1
+
+# Environment requirements:
+# - DATABASE_URL (PostgreSQL connection string)
+# - BACKUP_ENCRYPTION_KEY (passphrase for GPG encryption)
+# - BACKUP_S3_BUCKET (S3 bucket name)
+# - AWS credentials configured (~/.aws/credentials)

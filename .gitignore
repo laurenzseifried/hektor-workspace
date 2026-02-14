@@ -28,3 +28,4 @@ session-*.json
 *.tmp
 *.temp
 .cache/
+services/lobster

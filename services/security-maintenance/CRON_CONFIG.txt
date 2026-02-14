@@ -1,0 +1,10 @@
+# Security Maintenance Cron Jobs
+
+# Weekly security report (Sundays 9 AM)
+0 9 * * 0 cd /Users/laurenz/.openclaw/workspace/services/security-maintenance && node weekly-report.js | mail -s "OpenClaw Weekly Security Report" admin@example.com
+
+# Monthly checklist (1st of month 10 AM)
+0 10 1 * * cd /Users/laurenz/.openclaw/workspace/services/security-maintenance && node monthly-checklist.js | mail -s "OpenClaw Monthly Maintenance Checklist" admin@example.com
+
+# Key rotation check (daily at 6 AM)
+0 6 * * * cd /Users/laurenz/.openclaw/workspace/services/security-maintenance && node -e "import('./key-rotation.js').then(kr => kr.checkKeyRotations().then(r => r.forEach(rem => console.log(rem.message))))"

@@ -1,0 +1,24 @@
+{
+  "timestamp": 1770967043317,
+  "global": 0.010499999999999999,
+  "byModel": {
+    "anthropic/claude-sonnet-4-5": 0.010499999999999999
+  },
+  "byUser": {
+    "laurenz": 0.010499999999999999
+  },
+  "byKey": {
+    "default": 0.010499999999999999
+  },
+  "requests": [
+    {
+      "timestamp": 1770967043317,
+      "model": "anthropic/claude-sonnet-4-5",
+      "inputTokens": 1000,
+      "outputTokens": 500,
+      "cost": 0.010499999999999999,
+      "user": "laurenz",
+      "apiKey": "default"
+    }
+  ]
+}

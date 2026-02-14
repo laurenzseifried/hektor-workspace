@@ -1,0 +1,12 @@
+{
+  "temporary": {},
+  "permanent": [],
+  "attemptLog": {
+    "test-key": [
+      {
+        "timestamp": 1770967494568,
+        "reason": "input_validation_failed"
+      }
+    ]
+  }
+}

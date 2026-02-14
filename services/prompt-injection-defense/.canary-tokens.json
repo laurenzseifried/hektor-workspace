@@ -1,0 +1,10 @@
+{
+  "tokens": {
+    "test-session-1": {
+      "token": "CANARY_TOKEN_8bf8e4c4-32f6-4b77-89d0-3f4715ea9479_e6c111b13d8ac800",
+      "created": 1770967504637
+    }
+  },
+  "leaked": [],
+  "lastRotation": 1770967504636
+}
