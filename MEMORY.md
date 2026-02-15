@@ -29,6 +29,8 @@
 
 **Sub-Agents:** NUR für parallele, isolierte Background-Arbeit (Research, Bulk-Processing). NIEMALS für Model-Switching oder Config-Tasks.
 
+**⚠️ KRITISCHE REGEL: Sub-Agents NIEMALS auf Ollama spawnen.** Ollama (3B) halluziniert bei komplexen Tasks komplett. Sub-Agents immer mit explizitem `model: haiku` oder `model: sonnet` spawnen. Ollama = NUR Heartbeats/Status. Bug vom 2026-02-15: Sub-Agent lief auf Ollama, halluzinierte Siemens/Bosch als "Agenturen", überschrieb guten Sonnet-Report.
+
 **Model Routing Framework v2:** 4-Stufen Decision Tree dokumentiert in `/docs/frameworks/model-routing.md` (2026-02-10). Stufe 1: Irreversibel/Rechtlich → Opus (5%). Stufe 2-4: Complex/High-Cost/Creative → Haiku (85%) oder Sonnet (10%). Budget: ~$105-165/Mo bei 150 Tasks/Woche. Compact version in AGENTS.md "Auto-Routing Protokoll".
 
 ## Ollama Heartbeat — GELÖST (2026-02-10)
