@@ -53,6 +53,20 @@ Before API call / tool use / KB query:
 - `/project/tasks.md` — What needs to be done (600 tokens max)
 - `/project/log.md` — Last 5 decisions (400 tokens max, ~20 entries)
 
+## Memory Flush (Pre-Compaction) — DETAILLIERT
+Bei jedem Memory Flush MUSS enthalten sein:
+1. **Aktive Konversation:** Was wurde besprochen, was war der letzte Stand, was steht als nächstes an
+2. **Genutzte Tools/Skills:** Welche Skills genutzt (z.B. nano-banana-pro), welche API Keys vorhanden (GOOGLE_API_KEY, GROQ_API_KEY etc.)
+3. **Env/Config-Wissen:** Was ist konfiguriert, was funktioniert, was nicht
+4. **Offene Requests:** Was hat Laurenz zuletzt gewollt, was davon ist erledigt, was pending
+5. **Entscheidungen dieser Session:** Alles was entschieden wurde, mit Kontext
+→ Ziel: Nächste Session kann nahtlos weitermachen, als wäre nichts passiert.
+
+## Error Recovery
+- **Tool-Call schlägt fehl?** In Character bleiben, Fehler kurz benennen, Original-Request beantworten. NIEMALS in generischen AI-Slop fallen ("It looks like you've shared...").
+- **`sessions_send` ≠ User-Antwort.** Queued Messages sind FROM User → direkt antworten. `sessions_send` nur für Agent↔Agent.
+- **Nach Cron/System-Events:** Kontext sauber trennen. User-Nachrichten in der Queue sind eigenständige Requests.
+
 ## Key Rules
 - **Self-Heal First:** 5+ Ansätze, dann Alert
 - **Fehler:** Ursache verstehen + Verbesserung dokumentieren

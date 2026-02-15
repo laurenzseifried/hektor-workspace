@@ -38,6 +38,28 @@ Memory:   GET /api/memory?agent=hektor
 Docs:     GET /api/docs/list
 ```
 
+## Verfügbare Skills (Built-in)
+
+| Skill | Zweck | Braucht |
+|-------|-------|---------|
+| nano-banana-pro | Bildgenerierung/-edit (Gemini 3 Pro) | GOOGLE_API_KEY |
+| nano-pdf | PDF-Verarbeitung | — |
+| groq-whisper | Audio→Text (Groq API) | GROQ_API_KEY |
+| brave-search | Web-Suche | BRAVE_API_KEY |
+| coding-agent | Background Coding (CC/Codex) | — |
+| github | gh CLI Integration | GITHUB_TOKEN |
+| summarize | URL/Podcast/Video Zusammenfassung | — |
+| video-frames | ffmpeg Frame-Extraktion | — |
+| weather | Wetter (kein Key) | — |
+| agentmail | Agent-Email-Inboxen | AGENTMAIL_API_KEY |
+| linkedin | LinkedIn API (Maton) | MATON_API_KEY? |
+| self-improvement | Learnings/Error-Tracking | — |
+| proactive-agent | WAL Protocol, Working Buffer | — |
+
+## API Keys (verfügbar, NICHT die Werte)
+
+`GOOGLE_API_KEY` · `GROQ_API_KEY` · `BRAVE_API_KEY` · `GITHUB_TOKEN` · `AGENTMAIL_API_KEY` · `HUNTER_API_KEY` · `OLLAMA_API_KEY`
+
 ## Eskalation
 
 - Stille Arbeit: Routine, kein Output
