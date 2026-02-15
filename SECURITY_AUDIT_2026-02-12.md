@@ -141,8 +141,8 @@ if (req.method !== 'POST' || req.url !== '/webhooks/subagent-complete') {
 
 **Recommended Fix:**
 ```javascript
-const WEBHOOK_TOKEN = process.env.WEBHOOK_TOKEN;
-if (!WEBHOOK_TOKEN || req.headers.authorization !== `Bearer ${WEBHOOK_TOKEN}`) {
+const WH_TOKEN = process.env.WH_TOKEN; // redacted
+if (!WH_TOKEN || req.headers.authorization !== `Bearer ${WH_TOKEN}`) {
   res.writeHead(401);
   return res.end('Unauthorized');
 }
@@ -464,7 +464,7 @@ if (!validTaskId) {
 
 - [ ] **Add webhook authentication**
   ```javascript
-  if (req.headers.authorization !== `Bearer ${process.env.WEBHOOK_TOKEN}`) {
+  if (req.headers.authorization !== `Bearer ${process.env.WH_TOKEN}`) {
     return res.end('Unauthorized');
   }
   ```
