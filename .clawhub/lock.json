@@ -32,6 +32,10 @@
     "agentmail": {
       "version": "1.1.1",
       "installedAt": 1770966369609
+    },
+    "linkedin-api": {
+      "version": "1.0.2",
+      "installedAt": 1771106961039
     }
   }
 }
